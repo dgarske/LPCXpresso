@@ -50,6 +50,17 @@
 #include "lpc_phy.h" /* For the PHY monitor support */
 #include "tcpecho.h"
 
+#include "otp_18xx_43xx.h" /* For RNG */
+
+#ifdef HAVE_CONFIG_H
+    #include <config.h>
+#endif
+
+#include <wolfssl/wolfcrypt/settings.h>
+#include <wolfssl/ssl.h>
+#include <wolfcrypt/test/test.h>
+
+
 /* When building the example to run in FLASH, the number of available
    pbufs and memory size (in lwipopts.h) and the number of descriptors
    (in lpc_18xx43xx_emac_config.h) can be increased due to more available
@@ -192,6 +203,23 @@ static void vSetupIFTask(void *pvParameters) {
 	}
 }
 
+
+typedef struct func_args {
+    int    argc;
+    char** argv;
+    int    return_code;
+} func_args;
+
+static func_args args = { 0 } ;
+
+static void vWolfTestTask(void *pvParameters)
+{
+	printf("\nCrypt Test\n");
+	wolfcrypt_test(&args);
+	printf("Crypt Test: Return code %d\n", args.return_code);
+}
+
+
 /*****************************************************************************
  * Public functions
  ****************************************************************************/
@@ -207,6 +235,7 @@ void msDelay(uint32_t ms)
 	vTaskDelay((configTICK_RATE_HZ * ms) / 1000);
 }
 
+
 /**
  * @brief	main routine for example_lwip_tcpecho_freertos_18xx43xx
  * @return	Function should not exit
@@ -220,6 +249,11 @@ int main(void)
 	xTaskCreate(vSetupIFTask, "SetupIFx",
 				configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
 				(xTaskHandle *) NULL);
+
+	/* Do the Wolf Test */
+	xTaskCreate(vWolfTestTask, "WolfTest",
+					configMINIMAL_STACK_SIZE * 10, NULL, (tskIDLE_PRIORITY + 1UL),
+					(xTaskHandle *) NULL);
 
 	/* Start the scheduler */
 	vTaskStartScheduler();

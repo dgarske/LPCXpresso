@@ -30,6 +30,8 @@
 									<listOptionValue builtIn="false" value="__USE_LPCOPEN"/>
 									<listOptionValue builtIn="false" value="__REDLIB__"/>
 									<listOptionValue builtIn="false" value="CORE_M3"/>
+									<listOptionValue builtIn="false" value="WOLFSSL_ROWLEY_ARM"/>
+									<listOptionValue builtIn="false" value="WOLFSSL_USER_SETTINGS"/>
 								</option>
 								<option id="gnu.c.compiler.option.misc.other.1766729797" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections" valueType="string"/>
 								<option id="com.crt.advproject.gcc.hdrlib.2113892434" superClass="com.crt.advproject.gcc.hdrlib" value="Redlib" valueType="enumerated"/>
@@ -40,6 +42,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lwip/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lwip/inc/ipv4}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/freertos/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/wolfssl}&quot;"/>
 								</option>
 								<inputType id="com.crt.advproject.compiler.input.623814297" superClass="com.crt.advproject.compiler.input"/>
 							</tool>
@@ -61,6 +64,8 @@
 								<option id="gnu.c.link.option.nostdlibs.246441281" name="No startup or default libs (-nostdlib)" superClass="gnu.c.link.option.nostdlibs" value="true" valueType="boolean"/>
 								<option id="gnu.c.link.option.other.1684401452" name="Other options (-Xlinker [option])" superClass="gnu.c.link.option.other" valueType="stringList">
 									<listOptionValue builtIn="false" value="-Map=&quot;${BuildArtifactFileBaseName}.map&quot;"/>
+									<listOptionValue builtIn="false" value="--defsym=__user_heap_base=__end_bss_RAM2"/>
+									<listOptionValue builtIn="false" value="--defsym=_pvHeapLimit=__end_bss_RAM2+0x8000"/>
 									<listOptionValue builtIn="false" value="--gc-sections"/>
 								</option>
 								<option id="com.crt.advproject.link.gcc.hdrlib.19211340" name="Library" superClass="com.crt.advproject.link.gcc.hdrlib" value="com.crt.advproject.gcc.link.hdrlib.codered.nohost" valueType="enumerated"/>
@@ -84,6 +89,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="example"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
+						<entry excluding="wolfcrypt/src/aes_asm.s|wolfcrypt/src/aes_asm.asm|wolfcrypt/user-crypto" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="wolfssl"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -118,6 +124,8 @@
 									<listOptionValue builtIn="false" value="__USE_LPCOPEN"/>
 									<listOptionValue builtIn="false" value="__REDLIB__"/>
 									<listOptionValue builtIn="false" value="CORE_M3"/>
+									<listOptionValue builtIn="false" value="WOLFSSL_ROWLEY_ARM"/>
+									<listOptionValue builtIn="false" value="WOLFSSL_USER_SETTINGS"/>
 								</option>
 								<option id="gnu.c.compiler.option.misc.other.549998953" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections" valueType="string"/>
 								<option id="com.crt.advproject.gcc.hdrlib.353773405" superClass="com.crt.advproject.gcc.hdrlib" value="Redlib" valueType="enumerated"/>
@@ -128,6 +136,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lwip/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lwip/inc/ipv4}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/freertos/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="/$(ProjName)/wolfssl"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/wolfssl}&quot;"/>
 								</option>
 								<inputType id="com.crt.advproject.compiler.input.20159824" superClass="com.crt.advproject.compiler.input"/>
 							</tool>
