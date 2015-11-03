@@ -279,7 +279,7 @@
 						<entry kind="macro" name="__REDLIB__" value=""/>
 						<entry kind="macro" name="__USE_LPCOPEN" value=""/>
 					</resource>
-					<resource project-relative-path="freertos/src/queue.c">
+					<resource project-relative-path="lwip/src/api/netbuf.c">
 						<entry kind="includePath" name="/lpc_chip_18xx/inc">
 							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
 						</entry>
@@ -304,7 +304,7 @@
 						<entry kind="macro" name="__REDLIB__" value=""/>
 						<entry kind="macro" name="__USE_LPCOPEN" value=""/>
 					</resource>
-					<resource project-relative-path="lwip/src/api/netbuf.c">
+					<resource project-relative-path="freertos/src/queue.c">
 						<entry kind="includePath" name="/lpc_chip_18xx/inc">
 							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
 						</entry>
@@ -1179,7 +1179,7 @@
 						<entry kind="macro" name="__REDLIB__" value=""/>
 						<entry kind="macro" name="__USE_LPCOPEN" value=""/>
 					</resource>
-					<resource project-relative-path="lwip/src/api/err.c">
+					<resource project-relative-path="lwip/src/core/ipv4/autoip.c">
 						<entry kind="includePath" name="/lpc_chip_18xx/inc">
 							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
 						</entry>
@@ -1204,7 +1204,7 @@
 						<entry kind="macro" name="__REDLIB__" value=""/>
 						<entry kind="macro" name="__USE_LPCOPEN" value=""/>
 					</resource>
-					<resource project-relative-path="lwip/src/core/ipv4/autoip.c">
+					<resource project-relative-path="lwip/src/api/err.c">
 						<entry kind="includePath" name="/lpc_chip_18xx/inc">
 							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
 						</entry>

@@ -4,7 +4,7 @@
 		<extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
 			<provider id="com.crt.advproject.GCCBuildCommandParser">
 				<language id="org.eclipse.cdt.core.gcc">
-					<resource project-relative-path="example/src/cr_startup_lpc18xx.c">
+					<resource project-relative-path="example/src/sysinit.c">
 						<entry kind="includePath" name="/lpc_chip_18xx/inc">
 							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
 						</entry>
@@ -17,7 +17,7 @@
 						<entry kind="macro" name="__REDLIB__" value=""/>
 						<entry kind="macro" name="__USE_LPCOPEN" value=""/>
 					</resource>
-					<resource project-relative-path="example/src/sysinit.c">
+					<resource project-relative-path="example/src/cr_startup_lpc18xx.c">
 						<entry kind="includePath" name="/lpc_chip_18xx/inc">
 							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
 						</entry>
