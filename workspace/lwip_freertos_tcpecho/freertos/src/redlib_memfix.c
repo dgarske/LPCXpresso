@@ -46,6 +46,9 @@ extern unsigned int *_pvHeapStart;
 unsigned int __check_heap_overflow (void * new_end_of_heap)
 {
 	unsigned long stackend = ((unsigned long) &_vStackTop) - STACK_SIZE;
-	return ((unsigned long)new_end_of_heap >= stackend);
+	if(_pvHeapStart < stackend) {
+		return ((unsigned long)new_end_of_heap >= stackend);
+	}
+	return 0; /* Heap is above stack, so no check needed */
 }
 #endif /* defined (__REDLIB__) */
