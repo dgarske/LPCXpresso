@@ -70,4 +70,6 @@ void vApplicationTickHook(void);
  * @}
  */
 
+void vPrintRtosStats(void);
+
 #endif /* __FREERTOSCOMMONHOOKS_H_ */

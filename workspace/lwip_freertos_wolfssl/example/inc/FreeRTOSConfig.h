@@ -78,6 +78,10 @@
 #define configMINIMAL_STACK_SIZE	( ( unsigned short ) 128 )
 #define configTOTAL_HEAP_SIZE		( ( size_t ) ( 0 ) )
 
+#include <assert.h>
+#define configASSERT_DEFINED		1
+#define configASSERT(x)				assert(x)
+
 #define configMAX_TASK_NAME_LEN		( 20 )
 #define configUSE_TRACE_FACILITY	1
 #define configUSE_16_BIT_TICKS		0
@@ -93,7 +97,12 @@
 #define configCHECK_FOR_STACK_OVERFLOW	2
 #define configUSE_RECURSIVE_MUTEXES		1
 #define configQUEUE_REGISTRY_SIZE		10
-#define configGENERATE_RUN_TIME_STATS	0
+
+#define configGENERATE_RUN_TIME_STATS		 	 1
+#define configUSE_STATS_FORMATTING_FUNCTIONS	 2
+extern void vConfigureTimerForRunTimeStats( void );
+#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() vConfigureTimerForRunTimeStats()
+#define portGET_RUN_TIME_COUNTER_VALUE() 		 Chip_TIMER_ReadCount(LPC_TIMER1)
 
 /* Set the following definitions to 1 to include the API function, or zero
 to exclude the API function. */
@@ -117,7 +126,7 @@ to exclude the API function. */
 #if defined(CORE_M3)
 /* The lowest interrupt priority that can be used in a call to a "set priority"
 function. */
-#define configLIBRARY_LOWEST_INTERRUPT_PRIORITY			0x1f
+#define configLIBRARY_LOWEST_INTERRUPT_PRIORITY			0xf
 
 /* The highest interrupt priority that can be used by any interrupt service
 routine that makes calls to interrupt safe FreeRTOS API functions.  DO NOT CALL
@@ -137,7 +146,7 @@ to all Cortex-M ports, and do not rely on any particular library functions. */
 #if defined(CORE_M4)
 /* The lowest interrupt priority that can be used in a call to a "set priority"
 function. */
-#define configLIBRARY_LOWEST_INTERRUPT_PRIORITY			0x3f
+#define configLIBRARY_LOWEST_INTERRUPT_PRIORITY			0xf
 
 /* The highest interrupt priority that can be used by any interrupt service
 routine that makes calls to interrupt safe FreeRTOS API functions.  DO NOT CALL

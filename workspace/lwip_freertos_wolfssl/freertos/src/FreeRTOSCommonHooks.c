@@ -31,7 +31,6 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
-#include "FreeRTOSCommonHooks.h"
 
 #include "chip.h"
 
@@ -67,7 +66,7 @@ __WEAK__ void vApplicationMallocFailedHook(void)
 __WEAK__ void vApplicationIdleHook(void)
 {
 	/* Best to sleep here until next systick */
-	//__WFI();
+	__WFI();
 }
 
 /* FreeRTOS stack overflow hook */
@@ -87,3 +86,54 @@ __WEAK__ void vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskNam
 /* FreeRTOS application tick hook */
 __WEAK__ void vApplicationTickHook(void)
 {}
+
+
+void vPrintRtosStats(void)
+{
+	uint8_t numTasks = uxTaskGetNumberOfTasks();
+	volatile size_t xFreeHeapSpace;
+
+	printf("Task Count %d:\n\n", numTasks);
+
+	#if ( configUSE_TRACE_FACILITY == 1 ) || ( configGENERATE_RUN_TIME_STATS == 1 )
+		char* strBuffer = (char*)pvPortMalloc(80 * numTasks);
+		if(strBuffer)
+		{
+			#if ( configUSE_TRACE_FACILITY == 1 )
+				strBuffer[0] = '\0';
+				vTaskList(strBuffer);
+				printf("%s\n", strBuffer);
+			#endif
+			#if ( configGENERATE_RUN_TIME_STATS == 1 )
+				strBuffer[0] = '\0';
+				vTaskGetRunTimeStats(strBuffer);
+				printf("%s\n", strBuffer);
+			#endif
+			vPortFree(strBuffer);
+		}
+	#endif
+
+	xFreeHeapSpace = xPortGetFreeHeapSize();
+	printf("Free Heap: %d bytes\n", xFreeHeapSpace);
+}
+
+
+#define TICKRATE_HZ 10
+void vConfigureTimerForRunTimeStats( void )
+{
+	uint32_t timerFreq;
+
+	/* Enable timer 1 clock and reset it */
+	Chip_TIMER_Init(LPC_TIMER1);
+	Chip_RGU_TriggerReset(RGU_TIMER1_RST);
+	while (Chip_RGU_InReset(RGU_TIMER1_RST)) {}
+
+	/* Get timer 1 peripheral clock rate */
+	timerFreq = Chip_Clock_GetRate(CLK_MX_TIMER1);
+
+	/* Timer setup for match and interrupt at TICKRATE_HZ */
+	Chip_TIMER_Reset(LPC_TIMER1);
+	Chip_TIMER_SetMatch(LPC_TIMER1, 1, (timerFreq / TICKRATE_HZ));
+	Chip_TIMER_ResetOnMatchEnable(LPC_TIMER1, 1);
+	Chip_TIMER_Enable(LPC_TIMER1);
+}

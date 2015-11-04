@@ -29,6 +29,7 @@
  * this code.
  */
 
+/* LWIP Includes */
 #include "lwip/init.h"
 #include "lwip/opt.h"
 #include "lwip/sys.h"
@@ -51,6 +52,8 @@
 #include "tcpecho.h"
 
 #include "otp_18xx_43xx.h" /* For RNG */
+
+#include "FreeRTOSCommonHooks.h"
 
 #ifdef HAVE_CONFIG_H
     #include <config.h>
@@ -222,10 +225,14 @@ static void vWolfTestTask(void *pvParameters)
 	wolfcrypt_test(&args);
 	printf("Crypt Test: Return code %d\n", args.return_code);
 
+	vPrintRtosStats();
+
 	memset(&args, 0, sizeof(args));
 	printf("\nBenchmark Test\n");
 	benchmark_test(&args);
 	printf("Benchmark Test: Return code %d\n", args.return_code);
+
+	vPrintRtosStats();
 
 #if 0
 	/* Add another thread for initializing physical interface. This
@@ -274,8 +281,10 @@ static void prvInitHeapMemory(void)
    vPortDefineHeapRegions(xHeapRegions);
 }
 
+/* Memory location of the generated random numbers (for total of 128 bits) */
 static volatile uint32_t* mRandData = (uint32_t*)0x40045050;
 static uint32_t mRandIndex = 0;
+static uint32_t mRandCount = 0;
 uint32_t rand_gen(void)
 {
 	uint32_t rand = 0;
@@ -292,6 +301,7 @@ uint32_t rand_gen(void)
 	if(++mRandIndex > 4) {
 		mRandIndex = 0;
 	}
+	mRandCount++;
 	return rand;
 }
 
@@ -303,9 +313,9 @@ int main(void)
 {
 	volatile uint32_t status;
 
-	prvInitHeapMemory();
-
 	prvSetupHardware();
+
+	prvInitHeapMemory();
 
 	/* Initialize the OTP Controller */
 	status = Chip_OTP_Init();
