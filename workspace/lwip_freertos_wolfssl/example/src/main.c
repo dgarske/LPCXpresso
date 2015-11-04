@@ -60,6 +60,9 @@
 #include <wolfssl/ssl.h>
 #include <wolfcrypt/test/test.h>
 
+//#include <wolfcrypt/benchmark/benchmark.h>
+extern int benchmark_test(void *args);
+
 
 /* When building the example to run in FLASH, the number of available
    pbufs and memory size (in lwipopts.h) and the number of descriptors
@@ -185,21 +188,21 @@ static void vSetupIFTask(void *pvParameters) {
 			}
 
 			DEBUGOUT("Link connect status: %d\r\n", ((physts & PHY_LINK_CONNECTED) != 0));
-
-			/* Delay for link detection (250mS) */
-			vTaskDelay(configTICK_RATE_HZ / 4);
 		}
 
 		/* Print IP address info */
 		if (!prt_ip) {
 			if (lpc_netif.ip_addr.addr) {
-				static char tmp_buff[16];
+				char tmp_buff[16];
 				DEBUGOUT("IP_ADDR    : %s\r\n", ipaddr_ntoa_r((const ip_addr_t *) &lpc_netif.ip_addr, tmp_buff, 16));
 				DEBUGOUT("NET_MASK   : %s\r\n", ipaddr_ntoa_r((const ip_addr_t *) &lpc_netif.netmask, tmp_buff, 16));
 				DEBUGOUT("GATEWAY_IP : %s\r\n", ipaddr_ntoa_r((const ip_addr_t *) &lpc_netif.gw, tmp_buff, 16));
 				prt_ip = 1;
 			}
 		}
+
+		/* Delay for link detection (250mS) */
+		vTaskDelay(pdMS_TO_TICKS(250));
 	}
 }
 
@@ -210,13 +213,29 @@ typedef struct func_args {
     int    return_code;
 } func_args;
 
-static func_args args = { 0 } ;
-
 static void vWolfTestTask(void *pvParameters)
 {
+	func_args args;
+
+	memset(&args, 0, sizeof(args));
 	printf("\nCrypt Test\n");
 	wolfcrypt_test(&args);
 	printf("Crypt Test: Return code %d\n", args.return_code);
+
+	memset(&args, 0, sizeof(args));
+	printf("\nBenchmark Test\n");
+	benchmark_test(&args);
+	printf("Benchmark Test: Return code %d\n", args.return_code);
+
+#if 0
+	/* Add another thread for initializing physical interface. This
+	   is delayed from the main LWIP initialization. */
+	xTaskCreate(vSetupIFTask, "SetupIFx",
+				configMINIMAL_STACK_SIZE * 2, NULL, (tskIDLE_PRIORITY + 1UL),
+				(xTaskHandle *) NULL);
+#endif
+
+	vTaskDelete( NULL );
 }
 
 
@@ -232,11 +251,11 @@ static void vWolfTestTask(void *pvParameters)
  */
 void msDelay(uint32_t ms)
 {
-	vTaskDelay((configTICK_RATE_HZ * ms) / 1000);
+	vTaskDelay(pdMS_TO_TICKS(ms));
 }
 
 
-#define REDLIB_HEAP	0x400
+#define REDLIB_HEAP	0x200
 static void prvInitHeapMemory(void)
 {
    extern char _ebss[];
@@ -294,15 +313,9 @@ int main(void)
 		DEBUGSTR("OTP Init Failed!\n");
 	}
 
-	/* Add another thread for initializing physical interface. This
-	   is delayed from the main LWIP initialization. */
-	xTaskCreate(vSetupIFTask, "SetupIFx",
-				configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
-				(xTaskHandle *) NULL);
-
 	/* Do the Wolf Test */
 	xTaskCreate(vWolfTestTask, "WolfTest",
-					configMINIMAL_STACK_SIZE * 35, NULL, (tskIDLE_PRIORITY + 1UL),
+					configMINIMAL_STACK_SIZE * 42, NULL, (tskIDLE_PRIORITY + 1UL),
 					(xTaskHandle *) NULL);
 
 	/* Start the scheduler */

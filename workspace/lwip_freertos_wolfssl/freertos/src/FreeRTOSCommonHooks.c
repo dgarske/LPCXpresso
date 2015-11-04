@@ -55,19 +55,10 @@
  * Public functions
  ****************************************************************************/
 
-/* Delay for the specified number of milliSeconds */
-void FreeRTOSDelay(uint32_t ms)
-{
-	TickType_t xDelayTime;
-
-	xDelayTime = xTaskGetTickCount();
-	vTaskDelayUntil(&xDelayTime, ms);
-}
-
 /* FreeRTOS malloc fail hook */
 __WEAK__ void vApplicationMallocFailedHook(void)
 {
-	DEBUGSTR("DIE:ERROR:FreeRTOS: Malloc Failure!\r\n");
+	DEBUGSTR("ERROR:FreeRTOS: Malloc Failure!\r\n");
 	taskDISABLE_INTERRUPTS();
 	for (;; ) {}
 }
@@ -76,7 +67,7 @@ __WEAK__ void vApplicationMallocFailedHook(void)
 __WEAK__ void vApplicationIdleHook(void)
 {
 	/* Best to sleep here until next systick */
-	__WFI();
+	//__WFI();
 }
 
 /* FreeRTOS stack overflow hook */
@@ -85,7 +76,7 @@ __WEAK__ void vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskNam
 	(void) pxTask;
 	(void) pcTaskName;
 
-	DEBUGOUT("DIE:ERROR:FreeRTOS: Stack overflow in task %s\r\n", pcTaskName);
+	DEBUGOUT("ERROR:FreeRTOS: Stack overflow in task %s\r\n", pcTaskName);
 	/* Run time stack overflow checking is performed if
 	   configCHECK_FOR_STACK_OVERFLOW is defined to 1 or 2.  This hook
 	   function is called if a stack overflow is detected. */

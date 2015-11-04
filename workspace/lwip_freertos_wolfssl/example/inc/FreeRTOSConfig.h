@@ -81,7 +81,7 @@
 #define configMAX_TASK_NAME_LEN		( 20 )
 #define configUSE_TRACE_FACILITY	1
 #define configUSE_16_BIT_TICKS		0
-#define configUSE_MALLOC_FAILED_HOOK	0
+#define configUSE_MALLOC_FAILED_HOOK 1
 #define configIDLE_SHOULD_YIELD		1
 #define configUSE_CO_ROUTINES 		0
 #define configUSE_MUTEXES			1

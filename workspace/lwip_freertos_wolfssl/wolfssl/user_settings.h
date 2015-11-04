@@ -26,20 +26,21 @@ extern uint32_t xTaskGetTickCount(void);
 #define HAVE_LWIP_NATIVE
 #define HAVE_SHA512
 
-#define FP_MAX_BITS              4096
-#define FP_MAX_BITS_ECC          512
-//#define ALT_ECC_SIZE
 #define FP_LUT                   4
-//#define USE_FAST_MATH
+#define FP_MAX_BITS              2048 /* 4096 */
+#define FP_MAX_BITS_ECC          512
+#define ALT_ECC_SIZE
+#define USE_FAST_MATH
 #define SMALL_SESSION_CACHE
 #define CURVED25519_SMALL
-#define TFM_TIMING_RESISTANT
-//#define TFM_ARM
 #define RSA_LOW_MEM
 #define GCM_SMALL
 #define ECC_SHAMIR
 #define USE_SLOW_SHA2
 #define MP_LOW_MEM
+#define TFM_TIMING_RESISTANT
+//#define TFM_ARM
+
 
 /* Remove Features */
 #define NO_DEV_RANDOM
@@ -57,19 +58,18 @@ extern uint32_t xTaskGetTickCount(void);
 #define NO_64BIT
 #define NO_WOLFSSL_SERVER
 #define NO_OLD_TLS
-#define ECC_USER_CURVES // Disables P-112, P-128, P-160, P-192, P-224, P-384, P-521 but leaves P-256 enabled
+#define ECC_USER_CURVES /* Disables P-112, P-128, P-160, P-192, P-224, P-384, P-521 but leaves P-256 enabled */
 #define NO_DES3
 #define NO_MD5
 #define NO_RC4
 #define NO_DH
-#define NO_SHA  // Can't disable SHA because it's needed for OCSP
+#define NO_SHA
 
-/* HW Crypto Acceleration */
-// See README.md for instructions
 
-/* Benchmark */
+/* Benchmark / Testing */
 #define BENCH_EMBEDDED
-#define USE_CERT_BUFFERS_2048
+#define USE_CERT_BUFFERS_1024
+
 
 /* Custom functions */
 extern uint32_t rand_gen(void);

@@ -37,14 +37,6 @@
  */
 
 /**
- * @brief	Delay for the specified number of milliSeconds
- * @param	ms	: Delay in milliSeconds
- * @return	Nothing
- * @note	Delays the specified number of milliSeoconds using a task delay
- */
-void FreeRTOSDelay(uint32_t ms);
-
-/**
  * @brief	FreeRTOS malloc fail hook
  * @return	Nothing
  * @note	This function is alled when a malloc fails to allocate data.
