@@ -2,3 +2,5 @@ Debug
 .libs
 .deps
 .history
+.metadata
+.launch

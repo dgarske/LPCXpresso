@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;lwip_freertos_tcpecho&apos; to &apos;lwip_freertos_wolfssl&apos;" description="Rename resource &apos;lwip_freertos_tcpecho&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/lwip_freertos_tcpecho" name="lwip_freertos_wolfssl" stamp="1446592300274" updateReferences="true"/>&#x0A;<refactoring comment="Delete 2 resources" deleteContents="false" description="Delete 2 resources" element1="/lwip_freertos_wolfssl/lwip_freertos_tcpecho Debug.launch" element2="/lwip_freertos_wolfssl/lwip_freertos_tcpecho Release.launch" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="2" stamp="1446592333166"/>
-</session>

@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;lwip_freertos_wolfssl/example/src/freertos_tcpecho.c&apos; to &apos;main.c&apos;" description="Rename resource &apos;freertos_tcpecho.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="example/src/freertos_tcpecho.c" name="main.c" stamp="1446592321965" updateReferences="true"/>
-</session>
