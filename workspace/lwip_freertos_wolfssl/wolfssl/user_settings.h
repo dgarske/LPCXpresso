@@ -28,9 +28,9 @@ extern uint32_t xTaskGetTickCount(void);
 
 #define FP_MAX_BITS              4096
 #define FP_MAX_BITS_ECC          512
-#define ALT_ECC_SIZE
+//#define ALT_ECC_SIZE
 #define FP_LUT                   4
-#define USE_FAST_MATH
+//#define USE_FAST_MATH
 #define SMALL_SESSION_CACHE
 #define CURVED25519_SMALL
 #define TFM_TIMING_RESISTANT
@@ -39,6 +39,7 @@ extern uint32_t xTaskGetTickCount(void);
 #define GCM_SMALL
 #define ECC_SHAMIR
 #define USE_SLOW_SHA2
+#define MP_LOW_MEM
 
 /* Remove Features */
 #define NO_DEV_RANDOM
@@ -71,9 +72,9 @@ extern uint32_t xTaskGetTickCount(void);
 #define USE_CERT_BUFFERS_2048
 
 /* Custom functions */
-extern uint32_t Chip_OTP_GenRand(void);
-#define CUSTOM_RAND_GENERATE Chip_OTP_GenRand
-#define WOLFSSL_USER_CURRTIME
+extern uint32_t rand_gen(void);
+#define CUSTOM_RAND_GENERATE rand_gen
+
 
 /* Debugging - Optional */
 #if 0

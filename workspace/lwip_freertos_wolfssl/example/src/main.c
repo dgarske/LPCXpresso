@@ -255,6 +255,26 @@ static void prvInitHeapMemory(void)
    vPortDefineHeapRegions(xHeapRegions);
 }
 
+static volatile uint32_t* mRandData = (uint32_t*)0x40045050;
+static uint32_t mRandIndex = 0;
+uint32_t rand_gen(void)
+{
+	uint32_t rand = 0;
+	uint32_t status = LPC_OK;
+	if(mRandIndex == 0) {
+		status = Chip_OTP_GenRand();
+	}
+	if(status == LPC_OK) {
+		rand = mRandData[mRandIndex];
+	}
+	else {
+		DEBUGOUT("GenRand Failed 0x%x\n", status);
+	}
+	if(++mRandIndex > 4) {
+		mRandIndex = 0;
+	}
+	return rand;
+}
 
 /**
  * @brief	main routine for example_lwip_tcpecho_freertos_18xx43xx
@@ -262,9 +282,17 @@ static void prvInitHeapMemory(void)
  */
 int main(void)
 {
+	volatile uint32_t status;
+
 	prvInitHeapMemory();
 
 	prvSetupHardware();
+
+	/* Initialize the OTP Controller */
+	status = Chip_OTP_Init();
+	if(status != LPC_OK) {
+		DEBUGSTR("OTP Init Failed!\n");
+	}
 
 	/* Add another thread for initializing physical interface. This
 	   is delayed from the main LWIP initialization. */
@@ -274,7 +302,7 @@ int main(void)
 
 	/* Do the Wolf Test */
 	xTaskCreate(vWolfTestTask, "WolfTest",
-					configMINIMAL_STACK_SIZE * 40, NULL, (tskIDLE_PRIORITY + 1UL),
+					configMINIMAL_STACK_SIZE * 35, NULL, (tskIDLE_PRIORITY + 1UL),
 					(xTaskHandle *) NULL);
 
 	/* Start the scheduler */
