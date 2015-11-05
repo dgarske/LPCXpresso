@@ -1,3 +1,7 @@
+# WolfSSL Examples using the OM13076 (LPCXpresso18S37) board
+
+To use, install the NXP LPCXpresso IDE and import the projects in a new workspace.
+
 ## WolfSSL example projects:
 
 1. `wolf_demo_aes` based on the `periph_aes` example. It has console options to run the Wolf tests and benchmarks ('t' for the WolfSSL Tests and 'b' for the WolfSSL Benchmarks).
