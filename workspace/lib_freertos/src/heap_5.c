@@ -167,6 +167,28 @@ static size_t xBlockAllocatedBit = 0;
 
 /*-----------------------------------------------------------*/
 
+
+#define REDLIB_HEAP	0x200
+static void prvInitHeapMemory(void)
+{
+   extern char _ebss[];
+   extern char __top_RAM[];
+   extern char __base_RAM2[];
+   extern char __top_RAM2[];
+
+   /* Allocate two blocks of RAM for use by the heap. */
+   const char* base_RAM = _ebss + REDLIB_HEAP;
+   const HeapRegion_t xHeapRegions[] =
+   {
+      { ( uint8_t * ) base_RAM, __top_RAM - base_RAM },        // Remainder of first 32KB
+      { ( uint8_t * ) __base_RAM2, __top_RAM2 - __base_RAM2},  // 40KB
+      { NULL, 0 } /* Terminates the array. */
+   };
+   vPortDefineHeapRegions(xHeapRegions);
+}
+
+
+
 void *pvPortMalloc( size_t xWantedSize )
 {
 BlockLink_t *pxBlock, *pxPreviousBlock, *pxNewBlockLink;
@@ -174,6 +196,9 @@ void *pvReturn = NULL;
 
 	/* The heap must be initialised before the first call to
 	prvPortMalloc(). */
+	if(pxEnd == NULL) {
+		prvInitHeapMemory();
+	}
 	configASSERT( pxEnd );
 
 	vTaskSuspendAll();

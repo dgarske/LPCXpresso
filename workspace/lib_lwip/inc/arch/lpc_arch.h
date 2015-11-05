@@ -72,15 +72,8 @@ uint32_t SysTick_GetMS(void);
 
 #endif
 
-/**
- * @brief	Delay for the specified number of milliSeconds
- * @param	ms	: Time in milliSeconds to delay
- * @return	Nothing
- * @note	For standalone systems. This function will block for the specified
- * number of milliSconds. For RTOS based systems, this function will delay
- * the task by the specified number of milliSeconds.
- */
-void msDelay(uint32_t ms);
+
+extern void vDelayMs(uint32_t ms);
 
 /**
  * @}

@@ -48,8 +48,6 @@
 
 #include <string.h>
 
-extern void msDelay(uint32_t ms);
-
 #if LPC_NUM_BUFF_TXDESCS < 2
 #error LPC_NUM_BUFF_TXDESCS must be at least 2
 #endif
@@ -61,6 +59,20 @@ extern void msDelay(uint32_t ms);
 #ifndef LPC_CHECK_SLOWMEM
 #error LPC_CHECK_SLOWMEM must be 0 or 1
 #endif
+
+
+/**
+ * @brief	Delay for the specified number of milliSeconds
+ * @param	ms	: Time in milliSeconds to delay
+ * @return	Nothing
+ * @note	For standalone systems. This function will block for the specified
+ * number of milliSconds. For RTOS based systems, this function will delay
+ * the task by the specified number of milliSeconds.
+ */
+static void msDelay(uint32_t ms)
+{
+	vDelayMs(ms);
+}
 
 /** @ingroup NET_LWIP_LPC18XX43XX_EMAC_DRIVER
  * @{

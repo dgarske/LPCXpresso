@@ -87,6 +87,17 @@ __WEAK__ void vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskNam
 __WEAK__ void vApplicationTickHook(void)
 {}
 
+/**
+ * @brief	MilliSecond delay function based on FreeRTOS
+ * @param	ms	: Number of milliSeconds to delay
+ * @return	Nothing
+ * Needed for some functions, do not use prior to FreeRTOS running
+ */
+void vDelayMs(uint32_t ms)
+{
+	vTaskDelay(pdMS_TO_TICKS(ms));
+}
+
 
 void vPrintRtosStats(void)
 {

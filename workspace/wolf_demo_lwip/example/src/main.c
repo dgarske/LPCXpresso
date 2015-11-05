@@ -36,7 +36,10 @@
 
 #include <string.h>
 
-#if LWIP
+/* Enable LWIP and Ethernet */
+#define LWIP
+
+#ifdef LWIP
 /* LWIP Includes */
 #include "lwip/init.h"
 #include "lwip/opt.h"
@@ -54,14 +57,12 @@
 #endif
 
 #include "board.h"
-#if LWIP
+#ifdef LWIP
 #include "arch/lpc18xx_43xx_emac.h"
 #include "arch/lpc_arch.h"
 #include "arch/sys_arch.h"
 #include "lpc_phy.h" /* For the PHY monitor support */
 #endif
-
-#include "otp_18xx_43xx.h" /* For RNG */
 
 #include "FreeRTOSCommonHooks.h"
 
@@ -86,7 +87,7 @@ extern int benchmark_test(void *args);
  * Private types/enumerations/variables
  ****************************************************************************/
 
-#if LWIP
+#ifdef LWIP
 /* NETIF data */
 static struct netif lpc_netif;
 #endif
@@ -110,7 +111,7 @@ static void prvSetupHardware(void)
 	Board_LED_Set(0, false);
 }
 
-#if LWIP
+#ifdef LWIP
 /* Callback for TCPIP thread to indicate TCPIP init is done */
 static void tcpip_init_done_signal(void *arg)
 {
@@ -130,7 +131,7 @@ static void vSetupIFTask(void *pvParameters) {
 	LWIP_DEBUGF(LWIP_DBG_ON, ("Waiting for TCPIP thread to initialize...\n"));
 	tcpip_init(tcpip_init_done_signal, (void *) &tcpipdone);
 	while (!tcpipdone) {
-		msDelay(1);
+		vDelayMs(1);
 	}
 
 	LWIP_DEBUGF(LWIP_DBG_ON, ("Starting LWIP TCP echo server...\n"));
@@ -161,9 +162,6 @@ static void vSetupIFTask(void *pvParameters) {
 #if LWIP_DHCP
 	dhcp_start(&lpc_netif);
 #endif
-
-	/* Initialize and start application */
-	tcpecho_init();
 
 	/* This loop monitors the PHY link and will handle cable events
 	   via the PHY driver. */
@@ -239,22 +237,10 @@ static void vWolfTestTask(void *pvParameters)
 	wolfcrypt_test(&args);
 	printf("Crypt Test: Return code %d\n", args.return_code);
 
-	vPrintRtosStats();
-
 	memset(&args, 0, sizeof(args));
 	printf("\nBenchmark Test\n");
 	benchmark_test(&args);
 	printf("Benchmark Test: Return code %d\n", args.return_code);
-
-	vPrintRtosStats();
-
-#if LWIP
-	/* Add another thread for initializing physical interface. This
-	   is delayed from the main LWIP initialization. */
-	xTaskCreate(vSetupIFTask, "SetupIFx",
-				configMINIMAL_STACK_SIZE * 2, NULL, (tskIDLE_PRIORITY + 1UL),
-				(xTaskHandle *) NULL);
-#endif
 
 	vTaskDelete( NULL );
 }
@@ -263,84 +249,24 @@ static void vWolfTestTask(void *pvParameters)
 /*****************************************************************************
  * Public functions
  ****************************************************************************/
-
-/**
- * @brief	MilliSecond delay function based on FreeRTOS
- * @param	ms	: Number of milliSeconds to delay
- * @return	Nothing
- * Needed for some functions, do not use prior to FreeRTOS running
- */
-void msDelay(uint32_t ms)
-{
-	vTaskDelay(pdMS_TO_TICKS(ms));
-}
-
-
-#define REDLIB_HEAP	0x200
-static void prvInitHeapMemory(void)
-{
-   extern char _ebss[];
-   extern char __top_RAM[];
-   extern char __base_RAM2[];
-   extern char __top_RAM2[];
-
-   /* Allocate two blocks of RAM for use by the heap. */
-   const char* base_RAM = _ebss + REDLIB_HEAP;
-   const HeapRegion_t xHeapRegions[] =
-   {
-      { ( uint8_t * ) base_RAM, __top_RAM - base_RAM },        // Remainder of first 32KB
-      { ( uint8_t * ) __base_RAM2, __top_RAM2 - __base_RAM2},  // 40KB
-      { NULL, 0 } /* Terminates the array. */
-   };
-   vPortDefineHeapRegions(xHeapRegions);
-}
-
-/* Memory location of the generated random numbers (for total of 128 bits) */
-static volatile uint32_t* mRandData = (uint32_t*)0x40045050;
-static uint32_t mRandIndex = 0;
-static uint32_t mRandCount = 0;
-uint32_t rand_gen(void)
-{
-	uint32_t rand = 0;
-	uint32_t status = LPC_OK;
-	if(mRandIndex == 0) {
-		status = Chip_OTP_GenRand();
-	}
-	if(status == LPC_OK) {
-		rand = mRandData[mRandIndex];
-	}
-	else {
-		DEBUGOUT("GenRand Failed 0x%x\n", status);
-	}
-	if(++mRandIndex > 4) {
-		mRandIndex = 0;
-	}
-	mRandCount++;
-	return rand;
-}
-
 /**
  * @brief	main routine for example_lwip_tcpecho_freertos_18xx43xx
  * @return	Function should not exit
  */
 int main(void)
 {
-	volatile uint32_t status;
-
 	prvSetupHardware();
-
-	prvInitHeapMemory();
-
-	/* Initialize the OTP Controller */
-	status = Chip_OTP_Init();
-	if(status != LPC_OK) {
-		DEBUGSTR("OTP Init Failed!\n");
-	}
 
 	/* Do the Wolf Test */
 	xTaskCreate(vWolfTestTask, "WolfTest",
 					configMINIMAL_STACK_SIZE * 42, NULL, (tskIDLE_PRIORITY + 1UL),
 					(xTaskHandle *) NULL);
+
+	/* Add another thread for initializing physical interface. This
+	   is delayed from the main LWIP initialization. */
+	xTaskCreate(vSetupIFTask, "SetupIFx",
+				configMINIMAL_STACK_SIZE * 2, NULL, (tskIDLE_PRIORITY + 1UL),
+				(xTaskHandle *) NULL);
 
 	/* Start the scheduler */
 	vTaskStartScheduler();

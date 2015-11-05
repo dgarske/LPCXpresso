@@ -47,6 +47,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_freertos/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_board_nxp_lpcxpresso_1837/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_18xx/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_lwip/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_lwip/inc/ipv4}&quot;"/>
 								</option>
 								<inputType id="com.crt.advproject.compiler.input.623814297" superClass="com.crt.advproject.compiler.input"/>
 							</tool>
@@ -56,6 +58,7 @@
 								<option id="gnu.both.asm.option.flags.crt.607295429" name="Assembler flags" superClass="gnu.both.asm.option.flags.crt" value="-c -x assembler-with-cpp -DDEBUG -D__CODE_RED -D__REDLIB__" valueType="string"/>
 								<option id="com.crt.advproject.gas.hdrlib.2117663874" name="Library headers" superClass="com.crt.advproject.gas.hdrlib" value="Redlib" valueType="enumerated"/>
 								<option id="gnu.both.asm.option.include.paths.1970212623" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_lwip}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_wolfssl}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_freertos}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_board_nxp_lpcxpresso_1837}&quot;"/>
@@ -72,7 +75,7 @@
 								<option id="com.crt.advproject.link.gcc.multicore.master.userobjs.1096821144" name="Slave Objects (not visible)" superClass="com.crt.advproject.link.gcc.multicore.master.userobjs" valueType="userObjs"/>
 								<option id="com.crt.advproject.link.arch.1745017354" name="Architecture" superClass="com.crt.advproject.link.arch" value="com.crt.advproject.link.target.cm3" valueType="enumerated"/>
 								<option id="com.crt.advproject.link.thumb.1034786391" name="Thumb mode" superClass="com.crt.advproject.link.thumb" value="true" valueType="boolean"/>
-								<option id="com.crt.advproject.link.script.1375877500" name="Linker script" superClass="com.crt.advproject.link.script" value="&quot;lwip_freertos_wolfssl_Debug.ld&quot;" valueType="string"/>
+								<option id="com.crt.advproject.link.script.1375877500" name="Linker script" superClass="com.crt.advproject.link.script" value="&quot;wolf_demo_lwip_Debug.ld&quot;" valueType="string"/>
 								<option id="com.crt.advproject.link.manage.1925234097" name="Manage linker script" superClass="com.crt.advproject.link.manage" value="true" valueType="boolean"/>
 								<option id="gnu.c.link.option.nostdlibs.246441281" name="No startup or default libs (-nostdlib)" superClass="gnu.c.link.option.nostdlibs" value="true" valueType="boolean"/>
 								<option id="gnu.c.link.option.other.1684401452" name="Other options (-Xlinker [option])" superClass="gnu.c.link.option.other" valueType="stringList">
@@ -82,12 +85,14 @@
 								</option>
 								<option id="com.crt.advproject.link.gcc.hdrlib.19211340" name="Library" superClass="com.crt.advproject.link.gcc.hdrlib" value="com.crt.advproject.gcc.link.hdrlib.codered.nohost" valueType="enumerated"/>
 								<option id="gnu.c.link.option.libs.908576882" name="Libraries (-l)" superClass="gnu.c.link.option.libs" valueType="libs">
+									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="lib_lwip"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="lib_wolfssl"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="lib_freertos"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="lpc_board_nxp_lpcxpresso_1837"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="lpc_chip_18xx"/>
 								</option>
 								<option id="gnu.c.link.option.paths.1955887204" name="Library search path (-L)" superClass="gnu.c.link.option.paths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_lwip/Debug}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_wolfssl/Debug}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_freertos/Debug}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_board_nxp_lpcxpresso_1837/Debug}&quot;"/>
@@ -133,6 +138,13 @@
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/lib_wolfssl"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/lib_wolfssl/Debug"/>
 						<entry flags="RESOLVED" kind="libraryFile" name="lib_wolfssl" srcPrefixMapping="" srcRootPath=""/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="lib_lwip;" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/lib_lwip"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/lib_lwip/Debug"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="lib_lwip" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 			</storageModule>
@@ -197,7 +209,7 @@
 								<option id="com.crt.advproject.link.gcc.multicore.master.userobjs.885839724" name="Slave Objects (not visible)" superClass="com.crt.advproject.link.gcc.multicore.master.userobjs" valueType="userObjs"/>
 								<option id="com.crt.advproject.link.arch.469714741" name="Architecture" superClass="com.crt.advproject.link.arch" value="com.crt.advproject.link.target.cm3" valueType="enumerated"/>
 								<option id="com.crt.advproject.link.thumb.748412257" name="Thumb mode" superClass="com.crt.advproject.link.thumb" value="true" valueType="boolean"/>
-								<option id="com.crt.advproject.link.script.1477607726" name="Linker script" superClass="com.crt.advproject.link.script" value="&quot;lwip_freertos_wolfssl_Release.ld&quot;" valueType="string"/>
+								<option id="com.crt.advproject.link.script.1477607726" name="Linker script" superClass="com.crt.advproject.link.script" value="&quot;wolf_demo_lwip_Release.ld&quot;" valueType="string"/>
 								<option id="com.crt.advproject.link.manage.320096735" name="Manage linker script" superClass="com.crt.advproject.link.manage" value="true" valueType="boolean"/>
 								<option id="gnu.c.link.option.nostdlibs.611749834" name="No startup or default libs (-nostdlib)" superClass="gnu.c.link.option.nostdlibs" value="true" valueType="boolean"/>
 								<option id="gnu.c.link.option.other.833295072" name="Other options (-Xlinker [option])" superClass="gnu.c.link.option.other" valueType="stringList">

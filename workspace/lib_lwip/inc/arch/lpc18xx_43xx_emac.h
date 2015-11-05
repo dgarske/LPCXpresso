@@ -110,13 +110,6 @@ void lpc_emac_set_duplex(int full_duplex);
  */
 void lpc_emac_set_speed(int mbs_100);
 
-/**
- * @brief	Millisecond Delay function
- * @param	ms		: Milliseconds to wait
- * @return	None
- */
-extern void msDelay(uint32_t ms);
-
 #ifdef __cplusplus
 }
 #endif

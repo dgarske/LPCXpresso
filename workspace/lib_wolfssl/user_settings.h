@@ -75,6 +75,9 @@ extern uint32_t xTaskGetTickCount(void);
 extern uint32_t rand_gen(void);
 #define CUSTOM_RAND_GENERATE rand_gen
 
+extern double current_time(int reset);
+#define WOLFSSL_USER_CURRTIME
+
 
 /* Debugging - Optional */
 #if 0

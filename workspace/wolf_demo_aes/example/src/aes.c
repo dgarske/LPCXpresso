@@ -31,6 +31,19 @@
 #include "board.h"
 #include <string.h>
 
+
+#ifdef HAVE_CONFIG_H
+    #include <config.h>
+#endif
+
+#include <wolfssl/wolfcrypt/settings.h>
+#include <wolfssl/ssl.h>
+#include <wolfcrypt/test/test.h>
+
+//#include <wolfcrypt/benchmark/benchmark.h>
+extern int benchmark_test(void *args);
+
+
 /*****************************************************************************
  * Private types/enumerations/variables
  ****************************************************************************/
@@ -104,8 +117,10 @@ static uint8_t Expected_CypherText[CYPHER_CT] = {
 static uint8_t Temp_PlainText[CYPHER_CT];
 static uint8_t CypherText[CYPHER_CT];
 
-const char menu1[] =
-	"\r\n\t1. AES-128 Encryption using ECB mode without DMA\r\n"
+const char menu1[] = "\r\n"
+	"\tt. WolfSSL Test\r\n"
+	"\tb. WolfSSL Benchmark\r\n"
+	"\t1. AES-128 Encryption using ECB mode without DMA\r\n"
 	"\t2. AES-128 Decryption using ECB mode without DMA\r\n"
 	"\t3. AES-128 Encryption using CBC mode without DMA\r\n"
 	"\t4. AES-128 Decryption using CBC mode without DMA\r\n"
@@ -515,11 +530,20 @@ void display_details_decrypt(CRYPT_CTRL_T* ctrl)
  * @brief	main routine for blinky example
  * @return	Function should not exit.
  */
+
+
+typedef struct func_args {
+    int    argc;
+    char** argv;
+    int    return_code;
+} func_args;
+
 int main(void)
 {
 	int opt = 0;
 	uint8_t buffer[1];
 	CRYPT_CTRL_T enc_ctrl;
+	func_args args;
 	
 	SystemCoreClockUpdate();
 	Board_Init();
@@ -666,6 +690,20 @@ int main(void)
 			else {
 				DEBUGOUT("\r\nAES Decryption in CBC mode with DMA passed\r\n");
 			}
+			break;
+
+		case 't':
+			memset(&args, 0, sizeof(args));
+			printf("\nCrypt Test\n");
+			wolfcrypt_test(&args);
+			printf("Crypt Test: Return code %d\n", args.return_code);
+			break;
+
+		case 'b':
+			memset(&args, 0, sizeof(args));
+			printf("\nBenchmark Test\n");
+			benchmark_test(&args);
+			printf("Benchmark Test: Return code %d\n", args.return_code);
 			break;
 
 		// All other cases go here

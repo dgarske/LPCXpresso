@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>wolf_demo</name>
+	<name>wolf_demo_lwip</name>
 	<comment></comment>
 	<projects>
 		<project>lpc_chip_18xx</project>
 		<project>lpc_board_nxp_lpcxpresso_1837</project>
 		<project>lib_freertos</project>
 		<project>lib_wolfssl</project>
+		<project>lib_lwip</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -70,6 +70,8 @@ void vApplicationTickHook(void);
  * @}
  */
 
+void vDelayMs(uint32_t ms);
+
 void vPrintRtosStats(void);
 
 #endif /* __FREERTOSCOMMONHOOKS_H_ */

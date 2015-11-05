@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>periph_aes</name>
+	<name>wolf_demo_aes</name>
 	<comment></comment>
 	<projects>
 		<project>lpc_chip_18xx</project>
 		<project>lpc_board_nxp_lpcxpresso_1837</project>
+		<project>lib_wolfssl</project>
+		<project>lib_freertos</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
