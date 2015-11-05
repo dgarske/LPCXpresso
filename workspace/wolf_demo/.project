@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>lpc_board_nxp_lpcxpresso_1837</name>
+	<name>wolf_demo</name>
 	<comment></comment>
 	<projects>
 		<project>lpc_chip_18xx</project>
+		<project>lpc_board_nxp_lpcxpresso_1837</project>
+		<project>lib_freertos</project>
+		<project>lib_wolfssl</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

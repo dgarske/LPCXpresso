@@ -29,6 +29,14 @@
  * this code.
  */
 
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "semphr.h"
+
+#include <string.h>
+
+#if LWIP
 /* LWIP Includes */
 #include "lwip/init.h"
 #include "lwip/opt.h"
@@ -43,13 +51,15 @@
 #if LWIP_DHCP
 #include "lwip/dhcp.h"
 #endif
+#endif
 
 #include "board.h"
+#if LWIP
 #include "arch/lpc18xx_43xx_emac.h"
 #include "arch/lpc_arch.h"
 #include "arch/sys_arch.h"
 #include "lpc_phy.h" /* For the PHY monitor support */
-#include "tcpecho.h"
+#endif
 
 #include "otp_18xx_43xx.h" /* For RNG */
 
@@ -76,8 +86,10 @@ extern int benchmark_test(void *args);
  * Private types/enumerations/variables
  ****************************************************************************/
 
+#if LWIP
 /* NETIF data */
 static struct netif lpc_netif;
+#endif
 
 /*****************************************************************************
  * Public types/enumerations/variables
@@ -98,6 +110,7 @@ static void prvSetupHardware(void)
 	Board_LED_Set(0, false);
 }
 
+#if LWIP
 /* Callback for TCPIP thread to indicate TCPIP init is done */
 static void tcpip_init_done_signal(void *arg)
 {
@@ -208,6 +221,7 @@ static void vSetupIFTask(void *pvParameters) {
 		vTaskDelay(pdMS_TO_TICKS(250));
 	}
 }
+#endif
 
 
 typedef struct func_args {
@@ -234,7 +248,7 @@ static void vWolfTestTask(void *pvParameters)
 
 	vPrintRtosStats();
 
-#if 0
+#if LWIP
 	/* Add another thread for initializing physical interface. This
 	   is delayed from the main LWIP initialization. */
 	xTaskCreate(vSetupIFTask, "SetupIFx",
